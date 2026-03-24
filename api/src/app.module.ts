@@ -14,6 +14,7 @@ import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { BudgetsModule } from './budgets/budgets.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -38,6 +39,9 @@ import { BudgetsModule } from './budgets/budgets.module';
 
     // BudgetsModule handles monthly spending limits per category
     BudgetsModule,
+
+    // AnalyticsModule provides read-only chart and summary data
+    AnalyticsModule,
   ],
 })
 export class AppModule {}
