@@ -43,6 +43,16 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/*
+ * Shimmer sweep — a bright highlight that slides left-to-right across
+ * skeleton cards while content is loading (like Facebook/LinkedIn skeletons).
+ * The element needs a base background colour and overflow:hidden.
+ */
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position:  400px 0; }
+}
+
 /* ─── Animation utility classes ────────────────────────────────────────────── */
 
 @layer utilities {
@@ -80,6 +90,32 @@
    * and iOS Safari's bottom toolbar. Requires viewport-fit=cover in the
    * <meta viewport> tag to activate env(safe-area-inset-bottom).
    */
+  /*
+   * Apply this class to any skeleton element to get the sweep shimmer.
+   * Works on both light and dark backgrounds — the gradient uses white/black
+   * with low opacity so it adapts automatically.
+   */
+  .shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 100%
+    );
+    background-size: 400px 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  .dark .shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+  }
+
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }

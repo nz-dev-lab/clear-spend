@@ -27,7 +27,13 @@ import { ThemeProvider } from './context/ThemeContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import AppLayout      from './components/layout/AppLayout'
 import SplashScreen   from './components/ui/SplashScreen'
-import PageLoader     from './components/ui/PageLoader'
+import PageLoader, {
+  ExpensesSkeleton,
+  BudgetsSkeleton,
+  ReportsSkeleton,
+  CategoriesSkeleton,
+  DashboardSkeleton,
+} from './components/ui/PageLoader'
 
 // ── Lazy-loaded pages ──────────────────────────────────────────────────────
 // Each page is in its own JS chunk — only downloaded when the user navigates
@@ -91,27 +97,49 @@ export default function App() {
               Suspense wraps all routes so if any lazy chunk is still loading,
               PageLoader is shown instead of a blank screen.
             */}
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Public routes */}
-                <Route path="/login"    element={<Page><Login /></Page>}    />
-                <Route path="/register" element={<Page><Register /></Page>} />
+            {/*
+              Each route gets its own Suspense with a skeleton that matches
+              the real page layout — so the shimmer cards are the right shape.
+            */}
+            <Routes>
+              {/* Public routes */}
+              <Route path="/login"    element={<Suspense fallback={<PageLoader />}><Page><Login /></Page></Suspense>}    />
+              <Route path="/register" element={<Suspense fallback={<PageLoader />}><Page><Register /></Page></Suspense>} />
 
-                {/* Protected routes — AppLayout provides the sidebar + header */}
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<AppLayout />}>
-                    <Route index             element={<Page><Dashboard /></Page>}  />
-                    <Route path="expenses"   element={<Page><Expenses /></Page>}   />
-                    <Route path="budgets"    element={<Page><Budgets /></Page>}    />
-                    <Route path="reports"    element={<Page><Reports /></Page>}    />
-                    <Route path="categories" element={<Page><Categories /></Page>} />
-                  </Route>
+              {/* Protected routes — AppLayout provides the sidebar + header */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route index element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Page><Dashboard /></Page>
+                    </Suspense>
+                  } />
+                  <Route path="expenses" element={
+                    <Suspense fallback={<ExpensesSkeleton />}>
+                      <Page><Expenses /></Page>
+                    </Suspense>
+                  } />
+                  <Route path="budgets" element={
+                    <Suspense fallback={<BudgetsSkeleton />}>
+                      <Page><Budgets /></Page>
+                    </Suspense>
+                  } />
+                  <Route path="reports" element={
+                    <Suspense fallback={<ReportsSkeleton />}>
+                      <Page><Reports /></Page>
+                    </Suspense>
+                  } />
+                  <Route path="categories" element={
+                    <Suspense fallback={<CategoriesSkeleton />}>
+                      <Page><Categories /></Page>
+                    </Suspense>
+                  } />
                 </Route>
+              </Route>
 
-                {/* Catch-all */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
+              {/* Catch-all */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
           </BrowserRouter>
         </div>
       </QueryClientProvider>
