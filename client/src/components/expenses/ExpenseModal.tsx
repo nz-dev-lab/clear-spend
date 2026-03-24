@@ -17,6 +17,7 @@ import { X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { getCategories } from '../../api/categories'
 import { createExpense, updateExpense } from '../../api/expenses'
+import CategorySelect from '../ui/CategorySelect'
 import type { Expense } from '../../types'
 
 interface ExpenseModalProps {
@@ -202,23 +203,17 @@ export default function ExpenseModal({ open, onClose, expense, defaultMonth }: E
             {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date}</p>}
           </div>
 
-          {/* Category dropdown */}
+          {/* Category picker — custom dropdown with coloured icons */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
               Category
             </label>
-            <select
+            <CategorySelect
+              categories={categories}
               value={categoryId}
-              onChange={(e) => { setCategoryId(e.target.value); setErrors(v => ({ ...v, categoryId: '' })) }}
-              className={inputClass('categoryId')}
-            >
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.icon} {cat.name}
-                </option>
-              ))}
-            </select>
+              onChange={(id) => { setCategoryId(id); setErrors(v => ({ ...v, categoryId: '' })) }}
+              error={!!errors.categoryId}
+            />
             {errors.categoryId && <p className="mt-1 text-xs text-red-500">{errors.categoryId}</p>}
           </div>
 
