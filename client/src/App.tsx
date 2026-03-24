@@ -38,14 +38,26 @@ import PageLoader, {
 // ── Lazy-loaded pages ──────────────────────────────────────────────────────
 // Each page is in its own JS chunk — only downloaded when the user navigates
 // to that route for the first time. After that it's cached by the browser.
+//
+// lazyWithDelay wraps each import with a minimum wait time so the shimmer
+// skeleton is always visible long enough to see the sweep animation.
+// On a local network chunks download in <50ms — without this the skeleton
+// would flash so briefly it's invisible.
+const lazyWithDelay = (importFn: () => Promise<any>, ms = 900) =>
+  lazy(() =>
+    Promise.all([
+      importFn(),
+      new Promise(resolve => setTimeout(resolve, ms)),
+    ]).then(([module]) => module)
+  )
 
-const Login      = lazy(() => import('./pages/auth/Login'))
-const Register   = lazy(() => import('./pages/auth/Register'))
-const Dashboard  = lazy(() => import('./pages/Dashboard'))
-const Expenses   = lazy(() => import('./pages/Expenses'))
-const Budgets    = lazy(() => import('./pages/Budgets'))
-const Reports    = lazy(() => import('./pages/Reports'))
-const Categories = lazy(() => import('./pages/Categories'))
+const Login      = lazyWithDelay(() => import('./pages/auth/Login'))
+const Register   = lazyWithDelay(() => import('./pages/auth/Register'))
+const Dashboard  = lazyWithDelay(() => import('./pages/Dashboard'))
+const Expenses   = lazyWithDelay(() => import('./pages/Expenses'))
+const Budgets    = lazyWithDelay(() => import('./pages/Budgets'))
+const Reports    = lazyWithDelay(() => import('./pages/Reports'))
+const Categories = lazyWithDelay(() => import('./pages/Categories'))
 
 // ── React Query client ─────────────────────────────────────────────────────
 const queryClient = new QueryClient({
