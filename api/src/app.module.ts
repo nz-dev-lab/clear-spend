@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { BudgetsModule } from './budgets/budgets.module';
 
 @Module({
   imports: [
@@ -34,6 +35,9 @@ import { ExpensesModule } from './expenses/expenses.module';
 
     // ExpensesModule handles logging and managing individual spending records
     ExpensesModule,
+
+    // BudgetsModule handles monthly spending limits per category
+    BudgetsModule,
   ],
 })
 export class AppModule {}
