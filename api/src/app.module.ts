@@ -9,6 +9,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,9 @@ import { PrismaModule } from './prisma/prisma.module';
 
     // PrismaModule gives the whole app access to the database connection
     PrismaModule,
+
+    // AuthModule handles register, login, logout, and token refresh
+    AuthModule,
   ],
 })
 export class AppModule {}
