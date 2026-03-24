@@ -1,0 +1,35 @@
+/*
+ * index.css — Global styles
+ *
+ * The three @tailwind directives inject Tailwind's base reset,
+ * component classes, and utility classes into the stylesheet.
+ * Everything else in the app uses Tailwind utility classes directly.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth dark/light mode color transitions across the whole app */
+@layer base {
+  * {
+    @apply transition-colors duration-200;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-50;
+  }
+
+  /* Custom scrollbar — thin and teal-tinted */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-400 rounded-full;
+  }
+}
