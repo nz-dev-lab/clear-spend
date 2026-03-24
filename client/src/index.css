@@ -10,6 +10,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Keyframe animations ──────────────────────────────────────────────────── */
+
+/*
+ * Splash screen — logo bounces in from small + transparent
+ * The cubic-bezier gives it that satisfying overshoot bounce feel
+ */
+@keyframes splashLogo {
+  0%   { opacity: 0; transform: scale(0.4) translateY(20px); }
+  70%  { transform: scale(1.08) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Splash title and tagline slide up from slightly below */
+@keyframes splashFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading dots — each dot pulses in a staggered wave */
+@keyframes splashDot {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40%            { opacity: 1;   transform: scale(1.2); }
+}
+
+/*
+ * Page enter — used every time a page mounts (route change).
+ * Subtle upward slide + fade so navigation feels smooth and responsive.
+ */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Animation utility classes ────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Applied to the logo icon container in SplashScreen */
+  .splash-logo {
+    animation: splashLogo 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* App name fades up 0.2s after the logo */
+  .splash-title {
+    animation: splashFadeUp 0.5s ease-out 0.5s both;
+  }
+
+  /* Tagline fades up 0.35s after the logo */
+  .splash-tagline {
+    animation: splashFadeUp 0.5s ease-out 0.65s both;
+  }
+
+  /* Each loading dot pulses — staggered via inline style animationDelay */
+  .splash-dot {
+    animation: splashDot 1.2s ease-in-out infinite;
+  }
+
+  /*
+   * Wrap every lazy-loaded page in this class.
+   * The animation plays each time the element is added to the DOM,
+   * which happens on every route change because React unmounts the old page.
+   */
+  .page-enter {
+    animation: pageEnter 0.25s ease-out both;
+  }
+}
+
+/* ─── Base styles ───────────────────────────────────────────────────────────── */
+
 /* Smooth dark/light mode color transitions across the whole app */
 @layer base {
   * {
