@@ -19,6 +19,7 @@ interface CategorySelectProps {
   onChange: (id: string) => void
   error?: boolean
   placeholder?: string
+  dropUp?: boolean            // open the list above the trigger instead of below
 }
 
 export default function CategorySelect({
@@ -27,6 +28,7 @@ export default function CategorySelect({
   onChange,
   error = false,
   placeholder = 'Select a category',
+  dropUp = false,
 }: CategorySelectProps) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -75,9 +77,9 @@ export default function CategorySelect({
         />
       </button>
 
-      {/* Dropdown list */}
+      {/* Dropdown list — opens upward if dropUp=true, downward otherwise */}
       {open && (
-        <div className="absolute z-50 w-full mt-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden">
+        <div className={`absolute z-50 w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${dropUp ? 'bottom-full mb-1.5' : 'top-full mt-1.5'}`}>
           <ul className="max-h-52 overflow-y-auto py-1">
             {categories.map((cat) => (
               <li key={cat.id}>

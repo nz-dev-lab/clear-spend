@@ -213,6 +213,7 @@ export default function ExpenseModal({ open, onClose, expense, defaultMonth }: E
               value={categoryId}
               onChange={(id) => { setCategoryId(id); setErrors(v => ({ ...v, categoryId: '' })) }}
               error={!!errors.categoryId}
+              dropUp
             />
             {errors.categoryId && <p className="mt-1 text-xs text-red-500">{errors.categoryId}</p>}
           </div>
