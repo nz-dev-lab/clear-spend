@@ -21,9 +21,10 @@ import { toast } from 'sonner'
 
 import { getExpenses, deleteExpense } from '../api/expenses'
 import { getCategories } from '../api/categories'
-import ExpenseModal from '../components/expenses/ExpenseModal'
-import ConfirmDialog from '../components/ui/ConfirmDialog'
-import EmptyState from '../components/ui/EmptyState'
+import ExpenseModal  from '../components/expenses/ExpenseModal'
+import ConfirmDialog  from '../components/ui/ConfirmDialog'
+import EmptyState     from '../components/ui/EmptyState'
+import CategoryIcon   from '../components/ui/CategoryIcon'
 import type { Expense } from '../types'
 
 /** Format number as NZD currency */
@@ -165,15 +166,8 @@ export default function Expenses() {
               key={expense.id}
               className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 flex items-center gap-4 hover:shadow-sm transition-shadow"
             >
-              {/* Category color dot + icon */}
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-base"
-                style={{ backgroundColor: expense.category.color + '22' }}
-              >
-                <span style={{ color: expense.category.color }}>
-                  {expense.category.icon}
-                </span>
-              </div>
+              {/* Category icon using Lucide */}
+              <CategoryIcon icon={expense.category.icon} color={expense.category.color} size="lg" />
 
               {/* Description + date + category */}
               <div className="flex-1 min-w-0">

@@ -10,6 +10,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Check } from 'lucide-react'
+import CategoryIcon from './CategoryIcon'
 import type { Category } from '../../types'
 
 interface CategorySelectProps {
@@ -60,13 +61,8 @@ export default function CategorySelect({
       >
         {selected ? (
           <>
-            {/* Coloured circle with the category icon */}
-            <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
-              style={{ backgroundColor: selected.color + '33' }}
-            >
-              <span style={{ color: selected.color }}>{selected.icon}</span>
-            </div>
+            {/* Category icon using Lucide */}
+            <CategoryIcon icon={selected.icon} color={selected.color} size="sm" />
             <span className="flex-1 text-gray-900 dark:text-white">{selected.name}</span>
           </>
         ) : (
@@ -92,13 +88,8 @@ export default function CategorySelect({
                     value === cat.id ? 'bg-primary-50 dark:bg-primary-950' : ''
                   }`}
                 >
-                  {/* Category icon circle */}
-                  <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
-                    style={{ backgroundColor: cat.color + '33' }}
-                  >
-                    <span style={{ color: cat.color }}>{cat.icon}</span>
-                  </div>
+                  {/* Category icon using Lucide */}
+                  <CategoryIcon icon={cat.icon} color={cat.color} size="sm" />
 
                   <span className={`flex-1 ${value === cat.id ? 'font-semibold text-primary-700 dark:text-primary-300' : 'text-gray-800 dark:text-gray-200'}`}>
                     {cat.name}

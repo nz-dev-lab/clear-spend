@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { upsertBudget } from '../../api/budgets'
+import CategoryIcon from '../ui/CategoryIcon'
 import type { Category, Budget } from '../../types'
 
 interface BudgetModalProps {
@@ -77,13 +78,8 @@ export default function BudgetModal({
         {/* Header showing which category we're budgeting for */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-3">
-            {/* Category color chip */}
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-base"
-              style={{ backgroundColor: category.color + '22' }}
-            >
-              <span style={{ color: category.color }}>{category.icon}</span>
-            </div>
+            {/* Category icon */}
+            <CategoryIcon icon={category.icon} color={category.color} size="md" />
             <div>
               <h2 className="text-base font-bold text-gray-900 dark:text-white">
                 {existing ? 'Edit Budget' : 'Set Budget'}

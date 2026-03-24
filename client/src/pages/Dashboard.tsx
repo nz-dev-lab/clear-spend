@@ -36,6 +36,7 @@ import {
 import { getMonthlySummary, getSpendByCategory, getDailyTrend } from '../api/analytics'
 import StatCard from '../components/ui/StatCard'
 import EmptyState from '../components/ui/EmptyState'
+import CategoryIcon from '../components/ui/CategoryIcon'
 
 /** Format a number as a currency string, e.g. 1234.5 → "$1,234.50" */
 function formatCurrency(amount: number): string {
@@ -286,15 +287,8 @@ export default function Dashboard() {
 
                 return (
                   <div key={item.category.id} className="flex items-center gap-3">
-                    {/* Colored category icon circle */}
-                    <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base"
-                      style={{ backgroundColor: item.category.color + '22' }} // 22 = ~13% opacity hex
-                    >
-                      <span style={{ color: item.category.color }}>
-                        {item.category.icon}
-                      </span>
-                    </div>
+                    {/* Category icon using Lucide */}
+                    <CategoryIcon icon={item.category.icon} color={item.category.color} size="md" />
 
                     {/* Name + progress bar */}
                     <div className="flex-1 min-w-0">

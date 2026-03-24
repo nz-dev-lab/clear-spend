@@ -24,12 +24,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { PiggyBank, Trash2, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { getCategories }        from '../api/categories'
+import { getCategories }            from '../api/categories'
 import { getBudgets, deleteBudget } from '../api/budgets'
-import { getSpendByCategory }   from '../api/analytics'
-import BudgetModal              from '../components/budgets/BudgetModal'
-import ConfirmDialog            from '../components/ui/ConfirmDialog'
-import EmptyState               from '../components/ui/EmptyState'
+import { getSpendByCategory }       from '../api/analytics'
+import BudgetModal                  from '../components/budgets/BudgetModal'
+import ConfirmDialog                from '../components/ui/ConfirmDialog'
+import EmptyState                   from '../components/ui/EmptyState'
+import CategoryIcon                 from '../components/ui/CategoryIcon'
 import type { Category, Budget } from '../types'
 
 /** Format a number as NZD currency */
@@ -194,12 +195,7 @@ export default function Budgets() {
                 {/* Category header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-base"
-                      style={{ backgroundColor: category.color + '22' }}
-                    >
-                      <span style={{ color: category.color }}>{category.icon}</span>
-                    </div>
+                    <CategoryIcon icon={category.icon} color={category.color} size="lg" />
                     <span className="font-semibold text-gray-900 dark:text-white text-sm">
                       {category.name}
                     </span>
