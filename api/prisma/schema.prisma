@@ -1,0 +1,91 @@
+// schema.prisma — Database schema definition
+//
+// This file describes the shape of our database.
+// Prisma reads this file to:
+//   1. Generate the database tables (via migrations)
+//   2. Generate TypeScript types so our code is type-safe
+//
+// Think of each "model" here as a table in the database.
+
+generator client {
+  // Tells Prisma to generate a JavaScript/TypeScript client we can use in code
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // We're using PostgreSQL as our database
+  // The connection URL comes from the DATABASE_URL variable in our .env file
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// User — represents a registered student using the app
+// ---------------------------------------------------------------------------
+model User {
+  id         String     @id @default(cuid()) // unique ID auto-generated
+  email      String     @unique              // no two users can share an email
+  name       String
+  password   String                          // stored as a bcrypt hash, never plain text
+  createdAt  DateTime   @default(now())
+
+  // Relations — one user can have many of these
+  categories Category[]
+  expenses   Expense[]
+  budgets    Budget[]
+}
+
+// ---------------------------------------------------------------------------
+// Category — e.g. Food, Transport, Books (can be custom per user)
+// ---------------------------------------------------------------------------
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  color     String    // hex color used in charts, e.g. "#F97316"
+  icon      String    // emoji icon, e.g. "🍔"
+  userId    String    // which user this category belongs to
+  createdAt DateTime  @default(now())
+
+  // Each category belongs to one user; if the user is deleted, categories are too
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // A category can have many expenses and budgets linked to it
+  expenses  Expense[]
+  budgets   Budget[]
+}
+
+// ---------------------------------------------------------------------------
+// Expense — a single spending record logged by the student
+// ---------------------------------------------------------------------------
+model Expense {
+  id          String   @id @default(cuid())
+  amount      Decimal  @db.Decimal(10, 2) // stored with 2 decimal places, e.g. 12.50
+  description String
+  date        DateTime // when the expense happened
+  categoryId  String   // which category this expense falls under
+  userId      String   // which user logged this expense
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt         // auto-updated whenever the record changes
+
+  category    Category @relation(fields: [categoryId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------------------------------------------------------------------------
+// Budget — a spending limit set by the student per category per month
+// ---------------------------------------------------------------------------
+model Budget {
+  id         String   @id @default(cuid())
+  amount     Decimal  @db.Decimal(10, 2) // the budget limit, e.g. 200.00
+  month      String   // format: "YYYY-MM", e.g. "2024-03" for March 2024
+  categoryId String
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // A user can only have one budget per category per month
+  @@unique([userId, categoryId, month])
+}
