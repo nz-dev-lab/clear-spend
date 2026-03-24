@@ -67,8 +67,8 @@ export default function AppLayout() {
           userName={user?.name}
         />
 
-        {/* Page content — passes month via outlet context so child pages can use it */}
-        <main className="flex-1 overflow-auto p-4 lg:p-6 pb-24 lg:pb-6">
+        {/* Page content — overflow-x hidden prevents any child causing horizontal scroll */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-6 pb-28 lg:pb-6">
           <Outlet context={{ month }} />
         </main>
       </div>

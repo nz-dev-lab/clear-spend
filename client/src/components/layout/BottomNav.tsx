@@ -4,6 +4,10 @@
  * Fixed to the bottom of the screen on mobile — just like the Monzo app.
  * Hidden on lg+ screens where the Sidebar is shown instead.
  * Active tab gets a teal icon and label.
+ *
+ * iOS note: uses env(safe-area-inset-bottom) via the .pb-safe-add class so
+ * the tab bar sits above the iPhone home indicator and Safari's bottom toolbar.
+ * This requires viewport-fit=cover in index.html's <meta viewport> tag.
  */
 
 import { NavLink } from 'react-router-dom'
@@ -19,8 +23,9 @@ const navItems = [
 
 export default function BottomNav() {
   return (
-    // Visible only on small/medium screens — hidden from lg upward
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+    // pb-safe-add adds extra padding equal to env(safe-area-inset-bottom)
+    // so the bar content clears the iPhone home indicator
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 pb-safe-add">
       <div className="flex items-center justify-around h-16 px-2">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink

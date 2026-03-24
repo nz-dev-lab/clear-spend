@@ -30,6 +30,15 @@ function formatMonth(month: string): string {
   })
 }
 
+/** Short version for narrow mobile screens — "Mar 2026" */
+function formatMonthShort(month: string): string {
+  const [year, mon] = month.split('-').map(Number)
+  return new Date(year, mon - 1).toLocaleDateString('en-NZ', {
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
 /** Move the month forward or backward by one */
 function shiftMonth(month: string, direction: 1 | -1): string {
   const [year, mon] = month.split('-').map(Number)
@@ -43,8 +52,8 @@ export default function Header({ title, month, onMonthChange, userName }: Header
   return (
     <header className="flex items-center justify-between px-4 py-4 lg:px-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
 
-      {/* Page title */}
-      <h1 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h1>
+      {/* Page title — truncated with ellipsis if the right-side controls take too much space */}
+      <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate flex-1 mr-2">{title}</h1>
 
       <div className="flex items-center gap-2">
 
@@ -58,8 +67,10 @@ export default function Header({ title, month, onMonthChange, userName }: Header
             <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           </button>
 
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[110px] text-center">
-            {formatMonth(month)}
+          {/* Short format on mobile (e.g. "Mar 2026"), full on desktop ("March 2026") */}
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[68px] sm:min-w-[110px] text-center">
+            <span className="sm:hidden">{formatMonthShort(month)}</span>
+            <span className="hidden sm:inline">{formatMonth(month)}</span>
           </span>
 
           <button
